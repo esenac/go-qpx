@@ -12,4 +12,5 @@ const (
 	SolutionsNumber    = "solutions"
 	SaleCountry        = "saleCountry"
 	SaleCountryDefault = "IT"
+	Refundable         = "refundable"
 )
