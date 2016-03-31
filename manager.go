@@ -16,7 +16,13 @@ type RequestParams map[string]string
 func PerformRequest(params RequestParams, apiKey string) (*GoogleResponse, error) {
 	var requestSlices []Slice
 	var googleRequest GoogleRequest
-	googleRequest.SaleCountry = SaleCountryDefault
+
+	if params[SaleCountry] != "" {
+		googleRequest.SaleCountry = params[SaleCountry]
+	} else {
+		googleRequest.SaleCountry = SaleCountryDefault
+	}
+
 	googleRequest.Refundable = false
 	adultPassengers, _ := strconv.Atoi(params[PassengersNumber])
 	googleRequest.AdultCount = adultPassengers
