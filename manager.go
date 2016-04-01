@@ -31,14 +31,19 @@ func (r RequestParams) validate() error {
 
 //PerformRequest performs the request to GoogleAPI
 func PerformRequest(params RequestParams, apiKey string) (*GoogleResponse, error) {
+	if err := params.validate(); err != nil {
+		return nil, err
+	}
+
 	var requestSlices []Slice
 	var googleRequest GoogleRequest
 	var err error
+
+	googleRequest.SaleCountry = saleCountryDefault
 	if params[SaleCountry] != "" {
 		googleRequest.SaleCountry = params[SaleCountry]
-	} else {
-		googleRequest.SaleCountry = SaleCountryDefault
 	}
+
 	refundable := true
 	if params[Refundable] != "" {
 		refundable, err = strconv.ParseBool(params[Refundable])
@@ -48,7 +53,13 @@ func PerformRequest(params RequestParams, apiKey string) (*GoogleResponse, error
 	}
 
 	googleRequest.Refundable = refundable
-	adultPassengers, _ := strconv.Atoi(params[PassengersNumber])
+
+	adultPassengers := 1
+
+	if params[PassengersNumber] != "" {
+		adultPassengers, _ := strconv.Atoi(params[PassengersNumber])
+
+	}
 	googleRequest.AdultCount = adultPassengers
 	solNumber, _ := strconv.Atoi(params[SolutionsNumber])
 	googleRequest.Solutions = solNumber
