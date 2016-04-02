@@ -55,12 +55,17 @@ func PerformRequest(params RequestParams, apiKey string) (*GoogleResponse, error
 	googleRequest.Refundable = refundable
 
 	adultPassengers := 1
-
-	if params[PassengersNumber] != "" {
-		adultPassengers, _ := strconv.Atoi(params[PassengersNumber])
-
+	if params[AdultPassengers] != "" {
+		adultPassengers, _ = strconv.Atoi(params[AdultPassengers])
 	}
 	googleRequest.AdultCount = adultPassengers
+
+	childPassengers := 0
+	if params[ChildPassengers] != "" {
+		childPassengers, _ = strconv.Atoi(params[ChildPassengers])
+	}
+	googleRequest.ChildCount = childPassengers
+
 	solNumber, _ := strconv.Atoi(params[SolutionsNumber])
 	googleRequest.Solutions = solNumber
 
