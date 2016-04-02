@@ -31,60 +31,15 @@ func (r RequestParams) validate() error {
 
 //PerformRequest performs the request to GoogleAPI
 func PerformRequest(params RequestParams, apiKey string) (*GoogleResponse, error) {
-	if err := params.validate(); err != nil {
+	var googleRequest GoogleRequest
+
+	err := googleRequest.prepare(params)
+	if err != nil {
 		return nil, err
 	}
 
-	var requestSlices []Slice
-	var googleRequest GoogleRequest
-	var err error
-
-	googleRequest.SaleCountry = saleCountryDefault
-	if params[SaleCountry] != "" {
-		googleRequest.SaleCountry = params[SaleCountry]
-	}
-
-	refundable := true
-	if params[Refundable] != "" {
-		refundable, err = strconv.ParseBool(params[Refundable])
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	googleRequest.Refundable = refundable
-
-	adultPassengers := 1
-	if params[AdultPassengers] != "" {
-		adultPassengers, _ = strconv.Atoi(params[AdultPassengers])
-	}
-	googleRequest.AdultCount = adultPassengers
-
-	childPassengers := 0
-	if params[ChildPassengers] != "" {
-		childPassengers, _ = strconv.Atoi(params[ChildPassengers])
-	}
-	googleRequest.ChildCount = childPassengers
-
 	solNumber, _ := strconv.Atoi(params[SolutionsNumber])
 	googleRequest.Solutions = solNumber
-
-	var tripTo Slice
-	tripTo.Date = params[DepartureDate]
-	tripTo.Origin = params[Origin]
-	tripTo.Destination = params[Destination]
-
-	requestSlices = append(requestSlices, tripTo)
-
-	if params[ReturnDate] != "" {
-		var tripBack Slice
-		tripBack.Date = params[ReturnDate]
-		tripBack.Origin = params[Destination]
-		tripBack.Destination = params[Origin]
-		requestSlices = append(requestSlices, tripBack)
-	}
-
-	googleRequest.Slices = requestSlices
 
 	jsonPost, err := json.Marshal(googleRequest)
 	if err != nil {
