@@ -51,7 +51,7 @@ type Slice struct {
 	ProhibitedCarrier       []string `json:"prohibitedCarrier,omitempty"`
 }
 
-func (r *Request) prepare(params RequestParams) error {
+func (r *GoogleRequest) prepare(params RequestParams) error {
 	if err := params.validate(); err != nil {
 		return err
 	}
@@ -107,6 +107,15 @@ func (r *Request) prepare(params RequestParams) error {
 	}
 
 	r.Slices = requestSlices
+
+	solNumber := 10
+	if params[SolutionsNumber] != "" {
+		solNumber, err = strconv.Atoi(params[SolutionsNumber])
+		if err != nil {
+			return err
+		}
+	}
+	r.Solutions = solNumber
 
 	return nil
 }

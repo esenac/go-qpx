@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 )
 
 //RequestParams maps params for GoogleAPI request
@@ -37,9 +36,6 @@ func PerformRequest(params RequestParams, apiKey string) (*GoogleResponse, error
 	if err != nil {
 		return nil, err
 	}
-
-	solNumber, _ := strconv.Atoi(params[SolutionsNumber])
-	googleRequest.Solutions = solNumber
 
 	jsonPost, err := json.Marshal(googleRequest)
 	if err != nil {
