@@ -1,4 +1,5 @@
 # goqpx
+[![Build Status](https://travis-ci.org/esenac/goqpx.svg?branch=master)](https://travis-ci.org/esenac/goqpx)
 [Google QPX Express API](https://developers.google.com/qpx-express/) client written in Go.
 
 ## Usage example
