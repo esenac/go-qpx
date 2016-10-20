@@ -2,6 +2,7 @@ package goqpx
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -46,14 +47,22 @@ func PerformRequest(params RequestParams, apiKey string) (*GoogleResponse, error
 		return nil, err
 	}
 	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("Accept-Encoding", "gzip")
+	request.Header.Set("User-Agent", "goqpx gzip")
 	client := &http.Client{}
 	response, err := client.Do(request)
+
 	if err != nil {
 		return nil, err
 	}
 	defer response.Body.Close()
+	reader, err := gzip.NewReader(response.Body)
+	defer reader.Close()
+	if err != nil {
+		return nil, err
+	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := ioutil.ReadAll(reader)
 	if err != nil {
 		return nil, err
 	}
