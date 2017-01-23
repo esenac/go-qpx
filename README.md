@@ -11,7 +11,7 @@
 params := make(goqpx.RequestParams)
 params[goqpx.Origin] = "JFK"
 params[goqpx.Destination] = "ORD"
-params[goqpx.PassengersNumber] = "1"
+params[goqpx.AdultPassengers] = "1"
 params[goqpx.DepartureDate] = "2016-08-01"
 params[goqpx.SolutionsNumber] = "10"
 
