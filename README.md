@@ -3,6 +3,9 @@
 
 [Google QPX Express API](https://developers.google.com/qpx-express/) client written in Go.
 
+## Note
+The QPX Express API service will end on April 10, 2018.
+
 ## Usage example
 
 ```go
